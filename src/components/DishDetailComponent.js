@@ -1,6 +1,6 @@
 import React from 'react'
-import {Card, CardImg, CardText, CardBody, CardTitle} from 'reactstrap'
-
+import {Card, CardImg, CardText, CardBody, CardTitle, BreadcrumbItem, Breadcrumb} from 'reactstrap'
+import {Link} from 'react-router-dom'
 
 
 export default class DishDetail extends React.Component{ 
@@ -26,6 +26,16 @@ export default class DishDetail extends React.Component{
     render(){
         return(
             <div className="container">
+            <div className="row">
+                <Breadcrumb>
+                    <BreadcrumbItem><Link to='/menu'>Menu</Link></BreadcrumbItem>
+                    <BreadcrumbItem active>{this.props.dish.name}</BreadcrumbItem>
+                </Breadcrumb>
+                <div className="col-12">
+                    <h3>Menu</h3>
+                    <hr/>
+                </div>
+            </div>
             <div className='row'>
                 <div className='col-12 col-md-5 m-1'>
                     <Card>
@@ -38,7 +48,7 @@ export default class DishDetail extends React.Component{
                 </div>
                 <div className='col-12 col-md-5 m-1'>
                     <h4>Comments</h4>
-                    {this.renderComments(this.props.dish.comments)}
+                    {this.renderComments(this.props.comments)}
                 </div>
             </div>
             </div>
