@@ -52,7 +52,7 @@ export default class Contact extends React.Component {
                 <div className="col-12 col-sm-11 offset-sm-1">
                     <div className="btn-group" role="group">
                         <a role="button" className="btn btn-primary" href="tel:+85212345678"><i className="fa fa-phone"></i> Call</a>
-                        <a role="button" className="btn btn-info"><i className="fa fa-skype"></i> Skype</a>
+                        <a role="button" className="btn btn-info" href='#random'><i className="fa fa-skype"></i> Skype</a>
                         <a role="button" className="btn btn-success" href="mailto:confusion@food.net"><i className="fa fa-envelope-o"></i> Email</a>
                     </div>
                 </div>
@@ -113,7 +113,7 @@ export default class Contact extends React.Component {
                                 <Control.textarea className='form-control' model='.message' id='message' name='message' rows='12'/>
                             </Col>
                         </Row>
-                        <Row roclassName='form-group'w>
+                        <Row className='form-group'>
                             <Col md={{size:10, offset:2}}>
                                 <Button type='submit' color='primary'>Send Feedback</Button>
                             </Col>
