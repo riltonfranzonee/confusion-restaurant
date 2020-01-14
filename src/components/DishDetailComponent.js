@@ -15,9 +15,9 @@ class CommentForm extends React.Component{
 
     toggleModal = () => this.setState({isModalOpen: !this.state.isModalOpen})
 
-    handleSubmit = e => {
+    handleSubmit = values => {
         this.toggleModal()
-        e.preventDefault()
+        this.props.addComment(this.props.dishId, values.rating, values.name, values.comment)
     }
 
     render(){
@@ -29,7 +29,7 @@ class CommentForm extends React.Component{
             <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal} >
                 <ModalHeader toggle={this.toggleModal}>Submit Comment</ModalHeader>
                 <ModalBody>
-                    <LocalForm>
+                    <LocalForm onSubmit={values => this.handleSubmit(values)}>
                         <Row className="form-group">
                             <Label htmlFor='rating' md={12}>Rating</Label>
                             <Col md={10}>
@@ -57,7 +57,7 @@ class CommentForm extends React.Component{
                         </Row>
                         <Row className='form-group'>
                             <Col md={{size:10}}>
-                                <Button type='submit' color='primary' onClick={this.handleSubmit}>Submit</Button>
+                                <Button type='submit' color='primary'>Submit</Button>
                             </Col>
                         </Row>
                     </LocalForm>
@@ -70,16 +70,24 @@ class CommentForm extends React.Component{
 
 export default class DishDetail extends React.Component{ 
 
-    renderComments(comments){
+    renderComments(comments, addComment, dishId){
         if(comments != null){
             return(
-        comments.map(comment => (
-            <ul className='list-unstyled' key={comment.id}>
-                <li>{comment.comment}</li>
-                <li>    --{comment.author}, {new Intl.DateTimeFormat('en-US', {year: 'numeric', month: 'short', day:'2-digit'}).format(new Date(Date.parse(comment.date)))}</li>
+            <div>
+            <ul className='list-unstyled'>
+                {comments.map(comment => { 
+                    return(
+                        <li>
+                            <p>{comment.comment}</p>
+                            <p> --{comment.author}, {new Intl.DateTimeFormat('en-US', {year: 'numeric', month: 'short', day:'2-digit'}).format(new Date(Date.parse(comment.date)))}</p>
+                        </li>
+                    )
+                    })}
             </ul>
-            ))
-        )
+            <CommentForm dishId={dishId} addComment={addComment}/>
+            </div>
+            )
+
     } else{
         return (
             <div></div>
@@ -114,8 +122,7 @@ export default class DishDetail extends React.Component{
                 </div>
                 <div className='col-12 col-md-5 m-1'>
                     <h4>Comments</h4>
-                    {this.renderComments(this.props.comments)}
-                    <CommentForm/>
+                    {this.renderComments(this.props.comments, this.props.addComment, this.props.dish.id)}
                 </div>
             </div>
             </div>
