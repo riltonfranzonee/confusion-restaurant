@@ -19,7 +19,7 @@ class CommentForm extends React.Component{
 
     handleSubmit = values => {
         this.toggleModal()
-        this.props.addComment(this.props.dishId, values.rating, values.name, values.comment)
+        this.props.postComment(this.props.dishId, values.rating, values.name, values.comment)
     }
 
     render(){
@@ -72,7 +72,7 @@ class CommentForm extends React.Component{
 
 export default class DishDetail extends React.Component{ 
 
-    renderComments(comments, addComment, dishId){
+    renderComments(comments, postComment, dishId){
         if(comments != null){
             return(
             <div>
@@ -86,7 +86,7 @@ export default class DishDetail extends React.Component{
                     )
                     })}
             </ul>
-            <CommentForm dishId={dishId} addComment={addComment}/>
+            <CommentForm dishId={dishId} postComment={postComment}/>
             </div>
             )
 
@@ -141,7 +141,7 @@ export default class DishDetail extends React.Component{
                 </div>
                 <div className='col-12 col-md-5 m-1'>
                     <h4>Comments</h4>
-                    {this.renderComments(this.props.comments, this.props.addComment, this.props.dish.id)}
+                    {this.renderComments(this.props.comments, this.props.postComment, this.props.dish.id)}
                 </div>
             </div>
             </div>
