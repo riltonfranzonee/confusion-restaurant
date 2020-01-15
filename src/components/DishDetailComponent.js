@@ -3,6 +3,7 @@ import {Card, CardImg, CardText, CardBody, CardTitle, BreadcrumbItem, Breadcrumb
 import {Link} from 'react-router-dom'
 import {Control, LocalForm, Errors} from 'react-redux-form'
 import { Loading } from './LoadingComponent'
+import {baseUrl} from '../shared/baseUrl'
 
 
 
@@ -131,7 +132,7 @@ export default class DishDetail extends React.Component{
             <div className='row'>
                 <div className='col-12 col-md-5 m-1'>
                     <Card>
-                        <CardImg  object src={this.props.dish.image} alt={this.props.dish.name}/>
+                        <CardImg  object src={baseUrl + this.props.dish.image} alt={this.props.dish.name}/>
                          <CardBody>
                             <CardTitle>{this.props.dish.name}</CardTitle>
                             <CardText>{this.props.dish.description}</CardText>
