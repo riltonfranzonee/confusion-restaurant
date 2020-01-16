@@ -1,6 +1,8 @@
 import React from 'react';
 import { Breadcrumb, BreadcrumbItem, Card, CardBody, CardHeader, Media} from 'reactstrap';
 import { Link } from 'react-router-dom';
+import { baseUrl } from '../shared/baseUrl';
+import {Stagger, FadeTransform} from 'react-animation-components'
 
 
 function RenderLeader({leader}){
@@ -11,7 +13,7 @@ function RenderLeader({leader}){
             width={100}
             height={100}
             className="mr-3"
-            src={leader.image}
+            src={baseUrl + leader.image}
             alt={leader.name}
             />
             <Media body>
@@ -25,9 +27,14 @@ function RenderLeader({leader}){
 
 const About = (props) => {
 
-    const leaders = props.leaders.map((leader) => {
+    const leaders = props.leaders.leaders.map((leader) => {
         return (
-          <RenderLeader leader={leader}/>
+            <Stagger in>
+                <FadeTransform in 
+                    transformProps={{exitTransform: 'scale(0.5) translate Y(-50%)'}}>
+                    <RenderLeader leader={leader}/>
+            </FadeTransform>
+          </Stagger>
         );
     });
 

@@ -10,7 +10,7 @@ import Header from './HeaderComponent'
 import Footer from './FooterComponent'
 import {Switch, Route, Redirect, withRouter } from 'react-router-dom'
 import {connect} from 'react-redux'
-import { postComment, fetchDishes, fetchComments, fetchPromos } from '../redux/ActionCreators'
+import { postComment, postFeedback, fetchDishes, fetchComments, fetchPromos, fetchLeaders, fetchFeedback } from '../redux/ActionCreators'
 import {actions} from 'react-redux-form'
 import {TransitionGroup, CSSTransition} from 'react-transition-group'
 
@@ -20,6 +20,7 @@ class Main extends React.Component {
     this.props.fetchDishes()
     this.props.fetchPromos()
     this.props.fetchComments()
+    this.props.fetchLeaders()
   }
   onDishSelect(dishId) {
     this.setState({ selectedDish: dishId});
@@ -40,13 +41,15 @@ class Main extends React.Component {
   render() {
     const HomePage = () =>  {
         return(
-            <Home dish={this.props.dishes.dishes.filter(dish=>dish.featured)[0]}
+            <Home dish={this.props.dishes.dishes.filter(dish => dish.featured)[0]}
             dishesLoading={this.props.dishes.isLoading}
             dishesErrMess={this.props.dishes.errMess}
-            promotion={this.props.promotions.promotions.filter(promo=>promo.featured)[0]}
+            promotion={this.props.promotions.promotions.filter(promo => promo.featured)[0]}
             promosLoading={this.props.promotions.isLoading}
             promosErrMess={this.props.promotions.errMess}
-            leader={this.props.leaders.filter(leader=>leader.featured)[0]}
+            leader={this.props.leaders.leaders.filter(leader =>leader.featured)[0]}
+            leadersLoading={this.props.leaders.isLoading}
+            leadersErrMess={this.props.leaders.errMess}
             />
             
         )
@@ -70,11 +73,11 @@ class Main extends React.Component {
          <TransitionGroup>
            <CSSTransition key={this.props.location.key} classNames='page' timeout={300}>
               <Switch>
-                  <Route path='/home' component={HomePage} />
+                  <Route path='/home' component={() => <HomePage />} />
                   <Route exact path='/menu' component={() => <Menu dishes={this.props.dishes}/>}/>
                   <Route path={'/menu/:dishId'} component={DishWithId}/>
-                  <Route exact path='/contactus' component={() => <Contact resetFeedbackForm={this.props.resetFeedbackForm}/>}/>
-                  <Route exact path='/ aboutus' component={() => <About leaders={this.props.leaders}/>} />
+                  <Route exact path='/contactus' component={() => <Contact resetFeedbackForm={this.props.resetFeedbackForm} postFeedback={this.props.postFeedback} fetchFeedback={this.props.fetchFeedback}/>}/>
+                  <Route exact path='/aboutus' component={() => <About leaders={this.props.leaders}/>} />
                   <Redirect to='/home'/>
               </Switch>
               </CSSTransition>
@@ -96,10 +99,12 @@ class Main extends React.Component {
 
  const mapDispatchToProps = dispatch => ({
     postComment: (dishId, rating, author, comment) => dispatch(postComment(dishId, rating, author, comment)),
+    postFeedback: (firstname, lastname, telnum, email, agree, contactType, message, date) => dispatch(postFeedback(firstname, lastname, telnum, email, agree, contactType, message, date)),
     fetchDishes: () => {dispatch(fetchDishes())},
     resetFeedbackForm: () => {dispatch(actions.reset('feedback'))},
     fetchComments: () => {dispatch(fetchComments())},
     fetchPromos: () => {dispatch(fetchPromos())},
-
+    fetchLeaders: ()  => {dispatch(fetchLeaders())},
+    fetchFeedback: () => {dispatch(fetchFeedback())}
   })
  export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Main)) 
